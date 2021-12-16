@@ -1,0 +1,85 @@
+﻿@using belmontazh.Models;
+@model belmontazh.Models.krovliaCalculate
+@{
+    ViewBag.Title = "Онлайн калькулятор односкатной крыши, обрешетки и стропильной системы";
+    ViewBag.Description = "Расчет односкатной крыши, угла наклона стропил и количества кровельного материала. Калькулятор обрешетки и площади поверхности кровли.";
+    ViewBag.Keywords = "Онлайн калькулятор, односкатной, крыша, стропила, угол наклона.";
+}
+
+<div class="container">
+    <div class="row">
+
+
+    </div>
+    <h1 style="text-align:center;">@ViewBag.Title</h1>
+    <hr />
+    <div class="row">
+        <a class="btn btn-greeen" href="~/Krovlya/Dvuskatnaya">Расчет двускатной крыши</a>
+        <a class="btn btn-greeen" href="~/Krovlya/Odnoskatnaya">Расчет односкатной крыши</a>
+        <a class="btn btn-greeen" href="~/Krovlya/Valmovaya">Расчет вальмовой крыши</a>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-7">
+            @using (Ajax.BeginForm("resultCalculate", "Krovlya", new AjaxOptions { UpdateTargetId = "results", LoadingElementId = "loading" }, new { @class = "form-horizontal", role = "form", @onkeyup = "replaseForm()" }))
+            {
+                @Html.ValidationSummary(false)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.widthA, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.widthA, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.length, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.length, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.height, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.height, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.lengthC, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.lengthC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.krovMat, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.krovMat, new SelectList(ViewBag.List, "id", "name"), htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-4 col-md-8">
+                        <div style="float:left;">
+                            <input type="submit" class="btn btn-success" value="Расчет" />
+                        </div>
+                        <div style="float:left;">
+                            <div class="loader" id="loading"></div>
+                        </div>
+                    </div>     
+                </div>
+
+            }
+        </div>
+        <div class="col-md-5">
+            <img style="width:90%;" src="~/images/odnoskatnaya.jpg" alt="@ViewBag.Title" />
+        </div>
+    </div>
+    <div id="results"></div>
+    <hr />
+    <p class="text-success text-justify">
+        Односкатная крыша является самой простой среди других типов крыш и экономичной в плане расхода материалов и работ, 
+        так как имеет всего один скат. Такой вид крыши достаточно популярен и в основном применяется для гаражей, 
+        хозяйственных построек и других не жилых помещений. Может быть как чердачной, так и бесчердачной. 
+        Для данной крыши применимы практически все популярные виды кровельных, подкровельных материалов и утеплителей. 
+        К данному виду крыш применимы различные углы наклона ската, но чаще всего применяются малые углы. 
+        В таком случае необходимо учитывать повышенные снеговые нагрузки на кровлю и своевременно очищать ее от снега.
+    </p>
+</div>

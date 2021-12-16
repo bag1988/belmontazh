@@ -1,0 +1,17 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<knowBaseModel>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row mosaic">
+        @foreach (var m in Model)
+        {
+            <div class="mosaic_item">
+                <h4>@Html.ActionLink(m.name, "detalis", new { name = m.nameEn })</h4>
+                <p>
+                    <img src="@m.urlImage" />
+                    @m.description... @Html.ActionLink("читать дальше", "detalis", new { name = m.nameEn })
+                </p>
+            </div>
+        }
+    </div>
+}

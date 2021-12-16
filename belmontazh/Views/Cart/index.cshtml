@@ -1,0 +1,66 @@
+﻿@using belmontazh.Models;
+@model List<OrdersModel>
+@{
+    ViewBag.Title = "Корзина покупок";
+}
+
+<div class="container">
+    <h2 style="text-align:center;">@ViewBag.Title</h2>
+
+    <hr class="hr_orange" />
+    <div class="row">
+        <div class="col-md-3">
+            @Html.Action("leftmenu", "dveri")
+        </div>
+        <div class="col-md-9">
+            <div class="row  table-responsive">
+                <table class="table">
+                    <tr>
+                        <td><b>Наименование</b></td>
+                        <td><b>Цена</b></td>
+                        <td><b>Кол-во</b></td>
+                        <td><b>Итого</b></td>
+                        <td><b>Удалить</b></td>
+                    </tr>
+                    @foreach (OrdersModel order in Model)
+                    {
+                        <tr>
+                            <td>@order.name</td>
+                            <td><b>@order.cost</b></td>
+
+                            @if (order.dveriId != 0)
+                            {
+                                <td>
+                                    <input type="text" data-id="@order.dveriId" class="form-control" onkeyup="editCartDveri(this)" value="@order.countDveri" />
+                                </td>
+                                <td><strong id="cost">@(Math.Round(order.cost*order.countDveri,2))</strong> руб</td>
+                            }
+                            @if (order.komplektId != 0)
+                            {
+                                <td>
+                                    <input type="text" data-id="@order.komplektId" onkeyup="editCartKomplekt(this)" class="form-control" value="@order.countKomplekt" />
+                                </td>
+                                <td><strong id="cost">@(Math.Round(order.cost * order.countKomplekt,2))</strong> руб</td>
+                            }
+                            <td>@Html.ActionLink("Удалить", "deletecart", new { idDveri = order.dveriId, idKomplekt = order.komplektId })</td>
+                        </tr>
+                    }
+                    <tr class="text-right">
+                        <td colspan="5">
+                            <p id="allcost">
+                                
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="row text-right">
+                <a class="btn btn-greeen" href="/cart/createOrder">Продолжить</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

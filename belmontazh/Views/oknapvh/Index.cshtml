@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Купить окна и двери ПВХ в Борисове и Жодино";
+    ViewBag.Description = "Окна и двери ПВХ в Борисове по низким ценам. Бесплатный замер и доставка, акции и скидки. Качественные окна ПВХ европейского качества от производителя недорого в Борисове, Жодино, Крупки, Смолевичи";
+    ViewBag.Keywords = "окна пвх в Борисове, цены на окна ПВХ в Борисове, окна в Борисове, цены на окна в Борисове, окна в рассрочку в Борисове, окна пвх в рассрочку, купить окна в борисове";
+}
+
+<div class="indexPage">
+    <div id="myCarousel" class="carousel fade" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators" style="bottom:40px;">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+
+            <div class="item active">
+                <div class="carousel-caption img_roof backokna">
+                    <h1 class="main_img_text">ОКНА ПВХ <br /><font style="color:red"> НЕДОРОГО</font></h1>
+                    <p>НЕДОРОГИЕ ОКНА ПВХ В БОРИСОВЕ, ЖОДИНО, КРУПКИ, СМОЛЕВИЧИ ОТ ПРОИЗВОДИТЕЛЯ </p>
+                    <a href="~/oknapvh/calculator" class="btn btn-greeen btn-border">РАСЧЕТ СТОИМОСТИ</a>
+                </div>
+            </div>  
+            <div class="item">
+                <div class="carousel-caption img_roof backokna3">
+                    <h2 class="main_img_text">ПРИ ЗАКАЗЕ ОТ 2-х ОКОН <br /><font style="color:red"> ОТЛИВЫ В ПОДАРОК</font></h2>
+                    <a href="~/oknapvh/calculator" class="btn btn-greeen btn-border">РАСЧЕТ СТОИМОСТИ</a>
+                </div>
+            </div>      
+            <div class="item">
+                <div class="carousel-caption img_roof backokna2">
+                    <h2 class="main_img_text">ОСТЕКЛЕНИЕ БАЛКОНОВ <br />И ЛОДЖИЙ<font style="color:red"> ПОД КЛЮЧ</font></h2>                    
+                    <a href="~/oknapvh/calculator" class="btn btn-greeen btn-border">РАСЧЕТ СТОИМОСТИ</a>
+                </div>
+            </div>            
+        </div>
+
+         @*Left and right controls*@ 
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>    
+    @Html.Action("sales")
+    
+    <div class="line_top"></div>
+    <div class="container">           
+            <div class="table-responsive">
+                <table class="table"> 
+                    <tbody>
+                        <tr class="okna_tr">
+                            <td>
+                                <img src="~/images/okno1.png" />
+                                <div>
+                                    <span>Новая цена <b>120 руб</b></span>
+                                    
+                                    <p>
+                                        <strong>Старая цена <b>150 руб</b></strong>
+                                        <hr />
+                                        <b>Размер</b>
+                                        <br />
+                                        Ширина: 600 мм
+                                        <br />
+                                        Высота: 1000 мм
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <img src="~/images/okno2.png" />
+                                <div>
+                                    <span>Новая цена <b>220 руб</b></span>
+                                    <p>
+                                        <strong>Старая цена <b>270 руб</b></strong>
+                                        <hr />
+                                        <b>Размер</b>
+                                        <br />
+                                        Ширина: 1300 мм
+                                        <br />
+                                        Высота: 1400 мм
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <img src="~/images/okno3.png" />
+                                <div>
+                                    <span>Новая цена <b>320 руб</b></span>
+                                    <p>
+                                        <strong>Старая цена <b>390 руб</b></strong>
+                                        <hr />
+                                        <b>Размер</b>
+                                        <br />
+                                        Ширина: 2100 мм
+                                        <br />
+                                        Высота: 1400 мм
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <img src="~/images/okno4.png" />
+                                <div>
+                                    <span>Новая цена <b>390 руб</b></span>
+                                    <p>
+                                        <strong>Старая цена <b>470 руб</b></strong>
+                                        <hr />
+                                        <b>Размер</b>
+                                        <br />
+                                        Ширина: 2150 мм
+                                        <br />
+                                        Высота: 2150 мм
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>  
+                </table>
+            </div>
+            <div class="container" style="text-align:center;">
+                <a href="~/oknapvh/calculator" class="btn btn-greeen">Онлайн калькулятор окон ПВХ</a>
+            </div>
+        </div>
+    <div class="line_bottom"></div>
+    <br />
+    @Html.Action("oknosteps")
+
+    @Html.Action("info_client")
+
+    <div class="glazing">
+        @Html.Action("glazing")
+    </div>  
+    
+    @Html.Action("accessories")
+
+   @Html.Action("info_edge")
+</div>

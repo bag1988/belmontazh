@@ -1,0 +1,85 @@
+﻿@using belmontazh.Models;
+@model belmontazh.Models.krovliaCalculate
+@{
+    ViewBag.Title = "Онлайн калькулятор расчета угла наклона и стропильной системы двускатной крыши";
+    ViewBag.Description = "Онлайн калькулятор расчета угла наклона, стропильной системы и обрешетки двускатной крыши дома";
+    ViewBag.Keywords = "Онлайн калькулятор, двускатная, крыша, стропила, угол наклона.";
+}
+
+<div class="container">
+    <div class="row">
+        
+
+    </div>
+    <h1 style="text-align:center;">@ViewBag.Title</h1>
+    <hr />
+    <div class="row">
+        <a class="btn btn-greeen" href="~/Krovlya/Dvuskatnaya">Расчет двускатной крыши</a>
+        <a class="btn btn-greeen" href="~/Krovlya/Odnoskatnaya">Расчет односкатной крыши</a>
+        <a class="btn btn-greeen" href="~/Krovlya/Valmovaya">Расчет вальмовой крыши</a>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-7">
+            @using (Ajax.BeginForm("resultCalculate", "Krovlya", new AjaxOptions { UpdateTargetId = "results", LoadingElementId = "loading" }, new { @class = "form-horizontal", role = "form", @onkeyup = "replaseForm()" }))
+            {
+                @Html.ValidationSummary(false)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.width, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.width, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.length, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.length, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.height, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.height, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.lengthC, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.lengthC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.krovMat, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.krovMat, new SelectList(ViewBag.List, "id", "name"), htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-4 col-md-8">
+                        <div style="float:left;">
+                            <input type="submit" class="btn btn-success" value="Расчет" />
+                        </div>
+                        <div style="float:left;">
+                            <div class="loader" id="loading"></div>
+                        </div>
+                    </div>     
+                </div>
+
+            }
+        </div>
+        <div class="col-md-5">
+            <img style="width:90%;" src="~/images/dvuskatnaya.jpg" alt="@ViewBag.Title" />
+        </div>
+    </div>
+    <div id="results"></div>
+    <hr />
+    <p class="text-success text-justify">
+        Двускатная (двухскатная, щипцовая) – разновидность форм крыш с двумя наклонными скатами от конька до наружных стен.
+        Данная форма является самой распространенной и самой практичной с точки зрения стоимости, эффективности и внешнего вида.
+        Опирание стропил происходит друг на друга, а их пары соединяются обрешеткой.
+        Стены с торцевой стороны такой крыши, имеют треугольную форму, и называются фронтонами (щипцами).
+        Чаще всего под данным видом кровли устраивается чердачное помещение, освещаемое с помощью небольших фронтонных окон.
+    </p>
+</div>
+

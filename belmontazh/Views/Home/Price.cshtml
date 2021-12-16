@@ -1,0 +1,62 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<kategoriPriceModel>
+@{
+    ViewBag.Title = "Цены на строительно-монтажные работы, прайс на строительные услуги в Борисове, Жодино, Крупки, Смолевичи, расценки.";
+    ViewBag.Description = "Все строительно-монтажные работы выполняются качественно, с гарантией и в оговоренные сроки. Нашими лучшими рекомендациями служат положительные отзывы клиентов и партнеров. Мы стремимся сохранить свою высокую репутацию и поэтому можно с уверенностью сказать, что забота о клиенте - главная задача для нас. Строительно-монтажные работы в Борисове, Жодино, Крупки, Смолевичи. Расчет стоимости.";
+    ViewBag.Keywords = "расчет, калькулятор, фасад, прайс, утепление, отделка";
+}
+<div class="container">
+    <h1 style="text-align:center;">@ViewBag.Title</h1>
+    <br />
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="table-responsive">
+            <table class="table text-center table-hover" onkeyup="calculatePrice()" >                
+                <tbody>
+                    @foreach (var mod in Model)
+                    {
+
+                        if (mod.PriceModel.Count > 0)
+                        {
+                            <tr>
+                                <td colspan="5">
+                                    <h2 class="text-center">@mod.name</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>@Html.DisplayNameFor(model => model.name)</b></td>
+                                <td><b>Ед. изм.</b></td>
+                                <td><b>Цена BYN за ед.</b></td>
+                                <td><b>Кол-во</b></td>
+                                <td><b>Цена BYN</b></td>
+                            </tr>
+                            foreach (var m in mod.PriceModel)
+                            {
+                                <tr>
+                                    <td style="text-align:left;">
+                                        @Html.DisplayFor(model => m.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => m.unitsModel.name)
+                                    </td>
+                                    <td><span>@m.cost</span></td>
+                                    <td><input style="width:100px;" class="form-control" type="text"/></td>
+                                    <td><strong></strong></td>
+                                </tr>
+                            }
+                            
+                        }
+                    }
+                    <tr>
+                        <td colspan="4">
+                            <b>Итого:</b>
+                        </td>
+                        <td>
+                            <b id="cost"></b>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

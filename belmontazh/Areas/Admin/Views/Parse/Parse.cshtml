@@ -1,0 +1,126 @@
+﻿@model List<string>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Parse</title>
+</head>
+<body>
+    <span onclick="startParse();">Старт</span>
+    <div>
+        @foreach (string str in Model)
+        {
+            <p>@str</p>
+        }
+    </div>
+</body>
+</html>
+<script>
+    function startParse() {
+        
+        var p = $("div").find("p:first");
+        parse(p);
+       
+
+
+    }
+    function parse(obj) {
+        var url = $(obj).text();
+        $.ajax({
+            type: "POST",
+            url: "/admin/parse/getParse",
+            data: '{url: ' + JSON.stringify(url) + ' }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {                
+                parseHTML(response, obj)
+            },
+            failure: function (response) {
+                setTimeout(startParse, 1000);
+            },
+            error: function (response) {
+               setTimeout(startParse, 1000);
+            }
+        });
+    }
+    function parseHTML(html, obj)
+    {        
+        var proiz = $(html).find("span[itemprop=brand]").text().trim();
+        var nameDveri = $(html).find("h1[itemprop=name]").text().replace('"', '').replace("\t", "").replace(".", "").replace("/", "-").trim();
+        
+        var costDveri = parseFloat($(html).find("span.PricesalesPrice").text().replace(' pуб.', '').replace(',', '.').trim());
+        var img = $(html).find("img[itemprop=image]");
+        var podzakaz = $(html).find(".pod_zakaz_label").text().trim();
+        var urlImg = new Array();
+        for (var i = 0; i < img.length; i++)
+        {
+            urlImg.push({ "url": "https://www.dveridoff.by" + $(img[i]).attr("src") });
+        }
+        //var tableTr = $(html).find("tr");
+        //var tableValue = new Array();
+        //for (var i = 0; i < tableTr.length; i++)
+        //{
+        //    if($(tableTr[i]).find("[colspan=2]").length>0)
+        //    {
+
+        //    }
+        //    else
+        //    {
+        //        $(tableTr[i]).find("td").find("*").detach();
+        //        $(tableTr[i]).find("td:nth-child(2)").find("img").replaceWith("да");
+        //        var name = $(tableTr[i]).find("td:nth-child(1)").text().replace('"', '').replace("\t", "").trim();
+        //        var value = $(tableTr[i]).find("td:nth-child(2)").text().replace('"', '').replace("\t", "").trim();
+        //        tableValue.push({ "name": name, "value":value });
+        //    }
+        //}
+        var smallDescript = $(html).find("p[itemprop=description]").text();
+        var descDveri = $(html).find(".product-description");
+        descDveri.find(".title").detach();
+        //descDveri.find("#tab-review").detach();
+        descDveri.find("*").removeAttr("style");
+        descDveri.find("a").each(function () {
+            var text = $(this).text();
+            $(this).replaceWith(text);
+        });
+
+
+        var arrayImg = $(descDveri).find("img");
+        var replaceImg = new Array();
+        for (var i = 0; i < arrayImg.length; i++) {
+            replaceImg.push({ "id": i, "url": "https://www.dveridoff.by" + $(arrayImg[i]).attr("src") });
+            $(arrayImg[i]).replaceWith("<img id='" + i + "'/>");           
+        }
+
+
+        var paramDveri = new Array();
+        paramDveri.push({ "name": nameDveri, "proiz": proiz, "costDveri": costDveri, "urlImg": urlImg, "propertyDveri": null, "desc": descDveri.html(), "smallDescript": smallDescript, "arrayImg": replaceImg, "podzakaz": podzakaz });
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/parse/saveParse",
+            data: JSON.stringify(paramDveri),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                $(obj).replaceWith("<b style='color:green;'>" + $(obj).text() + "</b><br/>");
+                setTimeout(startParse, 1000);
+            },
+            failure: function (response) {
+                $(obj).replaceWith("<b style='color:red;'>" + $(obj).text() + "</b><br/><br/>");
+                setTimeout(startParse, 1000);
+            },
+            error: function (response) {
+                $(obj).replaceWith("<b style='color:red;'>" + $(obj).text() + "</b><br/><br/>");
+                setTimeout(startParse, 1000);
+            }
+        });
+
+
+    }
+</script>
+@Scripts.Render("~/bundles/jquery")

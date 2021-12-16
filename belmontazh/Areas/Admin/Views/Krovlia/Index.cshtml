@@ -1,0 +1,64 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<krovliaKategoriesModel>
+@{
+    ViewBag.Title = "Прайс кровля";
+}
+<h2>Прайс кровля @Html.ActionLink("Создать", "Create", null, new { @class = "btn btn-success" }) @Html.ActionLink("Добавить категоию", "CreateKategories", null, new { @class = "btn btn-success" }) @Html.ActionLink("Редактор свойств", "CreateProperty", null, new { @class = "btn btn-success" })</h2>
+<hr />
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row">
+        @foreach (var mod in Model)
+        {
+            if (mod.krovliaModel.Count > 0)
+            {
+        <h2 class="text-center">@mod.name</h2>
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">@Html.DisplayNameFor(model => model.name)</th>
+                    <th style="text-align:center;">Ед. изм.</th>
+                    <th style="text-align:center;" colspan=3>Цена BYN</th>
+                    <th style="text-align:center;">Действие</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    @foreach(krovliaTypeModel k in ViewBag.Property)
+                    {
+                        <td>@k.name</td>
+                    }
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                    @foreach (var m in mod.krovliaModel)
+                    {
+                    <tr>                        
+                        <td  style="text-align:left;">
+                            @Html.DisplayFor(model => m.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => m.unitsModel.name)
+                        </td>
+                                @foreach (krovliaTypeValueModel t in m.krovliaTypeValueModel)
+                                {
+                                    <td>@t.cost</td>
+                                }
+                        <td>
+                            @Html.ActionLink("Изменить", "Edit", new { id = m.id }, new { })
+                            @Html.ActionLink("Удалить", "Delete", new { id = m.id }, new {})
+                        </td>
+                    </tr>
+                    }
+
+            </tbody>
+        </table>
+                }
+        }
+    </div>
+        }
+else
+{
+    @:Нет проектов для отображения
+    }

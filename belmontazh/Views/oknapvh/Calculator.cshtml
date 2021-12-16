@@ -1,0 +1,184 @@
+﻿@using belmontazh.Models;
+@model oknaForm
+@{
+    ViewBag.Title = "Калькулятор цены на окна ПВХ";
+    ViewBag.Description = "Онлайн калькулятор расчета стоимости услуг по монтажу окон ПВХ в Борисове, Жодино, Крупки, Смолевичи. Oknis предлагает онлайн калькулятор для расчета стоимости пластиковых окон. Задайте необходимые размеры окна, укажите, нужна ли вам установка и узнайте сразу же цену  на окна ПВХ.";
+    ViewBag.Keywords = "пластиковые окна цены, москитная сетка цена, расчет стоимости окна, калькулятор цен окна, окна пвх цены калькулятор, калькулятор стоимости окон, окна пвх калькулятор стоимости, установка окон пвх цена";
+}
+
+<div class="container">
+    @Html.Action("sales")
+    <h1 style="text-align:center;">@ViewBag.Title</h1>
+    
+    <hr class="hr_orange" />
+    <p>
+        Хотите узнать цену на пластиковые окна по размеру? Наш калькулятор по индивидуальным размерам, позволит максимально точно рассчитать цену пластиковых окон по вашим размерам.
+
+    </p>
+    @if (ViewBag.List != null)
+    {
+        @Html.ValidationSummary(false)
+        using (Ajax.BeginForm("Calculator", "Oknapvh", new AjaxOptions { LoadingElementId = "loading", OnSuccess = "processData", OnBegin = "$('#error').empty()" }, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="row">
+                <h3>Выберите тип окна</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                @foreach (oknaTypeModel typ in ViewBag.List.oknaTypeModel)
+                                {
+                                    <td>
+                                        <label class="labelRadio" onclick="fullImgCalculate(this);">
+                                            @if (typ.id == 1)
+                                            {
+                                                @Html.RadioButtonFor(model => Model.oknaTypeModel, typ.id, htmlAttributes: new { @checked = true });                                                
+                                            }
+                                            else
+                                            {
+                                                @Html.RadioButtonFor(model => Model.oknaTypeModel, typ.id);
+                                            }
+                                            <img src="@typ.urlImage" alt="@typ.name" style="max-height:80px;" />
+                                        </label>
+                                    </td>
+                                }
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img id="full_img" style="max-height:250px; max-width:90%; margin-bottom:10px;" src="@ViewBag.imgUrl" />                   
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.oknaCtekloModel, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.DropDownList("oknaCtekloModel", new SelectList(ViewBag.List.oknaCtekloModel, "id", "name"), htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.oknaHardwareModel, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.DropDownList("oknaHardwareModel", new SelectList(ViewBag.List.oknaHardwareModel, "id", "name"), htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.oknaProfModel, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.DropDownList("oknaProfModel", new SelectList(ViewBag.List.oknaProfModel, "id", "name"), htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.width, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.width, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.height, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.height, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="form-group checkboxOkno">
+                        @Html.LabelFor(model => model.otliv, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            <label class="switch">
+                                <input type="checkbox" data-val="true" id="otliv" name="otliv" value="true" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group checkboxOkno">
+                        @Html.LabelFor(model => model.podokonik, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            <label class="switch">
+                                <input type="checkbox" data-val="true" id="podokonik" name="podokonik" value="true" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group checkboxOkno">
+                        @Html.LabelFor(model => model.otkos, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            <label class="switch">
+                                <input type="checkbox" data-val="true" id="otkos" name="otkos" value="true" />                 
+                                <span class="slider"></span>
+                            </label>                        
+                        </div>
+                    </div>
+                    <div class="form-group checkboxOkno">
+                        @Html.LabelFor(model => model.moskit, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            <label class="switch">
+                                <input type="checkbox" data-val="true" id="moskit" name="moskit" value="true" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group checkboxOkno">
+                        @Html.LabelFor(model => model.montazh, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            <label class="switch">
+                                <input type="checkbox" data-val="true" id="montazh" name="montazh" value="true" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">                       
+                        <div>
+                            <div style="float:left;">
+                                <input type="submit" class="btn btn-success" value="Расчет" />
+                            </div>
+                            <div style="float:left;">
+                                <div class="loader" id="loading"></div>
+                            </div>   
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                        <div id="error"></div>
+                        <div id="resultsCost">
+                            <h4>Стоимость окна: <b id="oknoCost">-</b></h4>
+                            <p>Отлив: <b id="oknoOtliv">-</b></p>
+                            <p>Подоконник: <b id="oknoPodokonik">-</b></p>
+                            <p>Отделка откосов: <b id="oknoOtkos">-</b></p>
+                            <p>Москитная сетка: <b id="oknoMoskit">-</b></p>
+                            <p>Монтаж: <b id="oknoMontazh">-</b></p>
+                            <div class="line"></div>
+                            <h4>Итого: <b id="oknoItog">-</b></h4>
+                        </div>
+                </div>
+            </div>
+        }
+        
+    }
+    <br />
+    </div>
+@Html.Action("oknosteps")
+
+<div class="container">
+    <h3 class="text-center">Онлайн-калькулятор расчета стоимости окон ПВХ в Борисове, Жодино, Крупки, Смолевичи сделает Ваши поиски проще и эффективнее!</h3>
+    <hr class="hr_orange" />
+    <p class="text-justify">
+        Все, что от Вас потребуется - это уделить процессу всего пару минут. Чтобы рассчитать стоимость окон ПВХ в Борисове, Жодино, Крупки, Смолевичи онлайн, Вам не придется долго разбираться с терминами и тратить драгоценное время на заполнение длинных таблиц. Буквально несколько простых шагов в удобном и интуитивно понятном интерфейсе нашего онлайн-калькулятора цен на пластиковые окна в Борисове, Жодино, Крупки, Смолевичи, и Вы получите возможность:
+        <ul>
+            <li>
+                оперативно выяснить реальную стоимость различных комплектаций окон, предлагаемых нами, а также подсчитать оплату за сопутствующие услуги (монтаж, доставка и пр.)
+            </li>
+            <li>
+                поэкспериментировать с разными вариантами, сравнивая их между собой, и подобрать тот, который устроит Вас полностью
+            </li>
+                
+        </ul>
+        Онлайн-калькулятор расчета стоимости пластиковых окон в Борисове, Жодино, Крупки, Смолевичи наглядно продемонстрирует Вам все возможности выбора. Понравившаяся Вам комплектация не укладывается в запланированный бюджет? Просто попробуйте выбрать другие параметры и изучить схожие варианты. Очень часто можно ощутимо сэкономить, изменив всего несколько незначительных характеристик, не влияющих на эстетику и комфорт использования.
+    </p>
+    <div class="line"></div> 
+</div>
+
+
+@Html.Action("info_client")

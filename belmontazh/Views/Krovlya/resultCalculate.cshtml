@@ -1,0 +1,127 @@
+﻿@model belmontazh.Models.racshetKrovlia
+
+<h1 style="text-align:center;">Расчеты</h1>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <td><b>Крыша</b></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Угол наклона крыши</td>
+                <td>@Model.ugol.ToString("F0")</td>
+                <td>градусов</td>
+            </tr>
+            @if (Model.ugolBok > 0)
+            {
+                <tr>
+                    <td>Угол наклона вальмовых стропил</td>
+                    <td>@Model.ugolBok.ToString("F0")</td>
+                    <td>градусов</td>
+                </tr>
+            }
+            <tr>
+                <td>Площадь поверхности крыши</td>
+                <td>@Model.ploshad.ToString("F2")</td>
+                <td>м2.</td>
+            </tr>
+
+            <tr>
+                <td><b>Стропила, размер 150х50</b></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Длина стропил</td>
+                <td>@Model.lenghtStrop.ToString("F2")</td>
+                <td>м.</td>
+            </tr>
+            @if (Model.lenghtStropBok > 0)
+            {
+                <tr>
+                    <td>Длина вальмовых стропил в самой высокой точке</td>
+                    <td>@Model.lenghtStropBok.ToString("F2")</td>
+                    <td>м.</td>
+                </tr>
+            }
+            @if (Model.lenghtStropD > 0)
+            {
+                <tr>
+                    <td>Длина диагональных (накосных) стропил</td>
+                    <td>@Model.lenghtStropD.ToString("F2")</td>
+                    <td>м.</td>
+                </tr>
+            }
+            <tr>
+                <td>Количество стропил</td>
+                <td>@Model.countStrop.ToString("F0")</td>
+                <td>шт.</td>
+            </tr>
+            @if (Model.countStropBok > 0)
+            {
+                <tr>
+                    <td>Количество вальмовых стропил</td>
+                    <td>@Model.countStropBok.ToString("F0")</td>
+                    <td>шт.</td>
+                </tr>
+            }
+            <tr>
+                <td>Объем бруса для стропил</td>
+                <td>@Model.obemStrop.ToString("F2")</td>
+                <td>м3.</td>
+            </tr>
+            @if (Model.obemStropBok > 0)
+            {
+                <tr>
+                    <td>Объем бруса для вальмовых стропил</td>
+                    <td>@Model.obemStropBok.ToString("F2")</td>
+                    <td>м3.</td>
+                </tr>
+            }
+            <tr>
+                <td>Примерный вес стропил</td>
+                <td>@Model.vesStrop.ToString("F2")</td>
+                <td>кг.</td>
+            </tr>
+
+            <tr>
+                <td><b>Обрешетка, размер 100х30, шаг 35 см.</b></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Количество рядов обрешетки</td>
+                <td>@Model.radObr.ToString("F0")</td>
+                <td>рядов</td>
+            </tr>
+            <tr>
+                <td>Количество досок обрешетки стандартной длиной 6 метров</td>
+                <td>@Model.countObr.ToString("F0")</td>
+                <td>шт.</td>
+            </tr>
+            <tr>
+                <td>Объем досок обрешетки</td>
+                <td>@Model.obemObr.ToString("F2")</td>
+                <td>м3.</td>
+            </tr>
+            <tr>
+                <td>Примерный вес досок обрешетки</td>
+                <td>@Model.vesObr.ToString("F2")</td>
+                <td>кг.</td>
+            </tr>
+            <tr>
+                <td><b>Стоимость работы</b></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Стоимость строительства крыши(с укладкой кровельного материала)</td>
+                <td>@Model.cost.ToString("F2")</td>
+                <td>BYN</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

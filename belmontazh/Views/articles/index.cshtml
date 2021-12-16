@@ -1,0 +1,71 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<knowBaseModel>
+@{
+    ViewBag.Title = "База знаний";
+    ViewBag.Description = "";
+    ViewBag.Keywords = "";
+}
+
+<div class="container">
+    <h2 style="text-align:center;">База знаний</h2>
+
+    <hr class="hr_orange" />
+    <div class="row">
+        <div class="row">
+            <div class="col-md-7">
+                <form action="/articles?name=" method="get" class="form-horizontal">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Поиск">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>                    
+                </form>
+                @if(Request.Params["name"]!=null)
+                {
+                <div class="row text-info">
+                    <p>
+                        Результат поиска по фразе: <b>@Request.Params["name"]</b>
+                    </p>
+                </div>
+                }
+            </div>
+            <div class="col-md-5 text-right">
+                <div class="btn-group">
+                    @Html.PageLinks((PageInfo)ViewBag.PageInfo, Url.Action("index"))
+                </div>
+            </div>
+        </div>
+        @if (Model != null && Model.Count() > 0)
+        {
+           
+            <div class="row mosaic">
+                @foreach (var m in Model)
+                {
+                    <div class="mosaic_item">
+                        <h4>@Html.ActionLink(m.name, "detalis", new { name = m.nameEn })</h4>
+                        <div>
+                            <img src="@m.urlImage" />
+                            @m.description... @Html.ActionLink("читать дальше", "detalis", new { name = m.nameEn })
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <div class="btn-group">
+                        @Html.PageLinks((PageInfo)ViewBag.PageInfo, Url.Action("index"))
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+                @:Нет данных для отображения
+                }
+
+            </div>
+
+</div>

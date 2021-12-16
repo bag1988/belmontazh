@@ -1,0 +1,28 @@
+﻿@model string
+@{
+    ViewBag.Title = "Создание роли";
+}
+
+        <h2>Создать роль</h2>
+<hr />
+        @Html.ValidationSummary(false)
+        @using (Html.BeginForm("Create", "Role", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="row">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Название</label>
+                    <div class="col-md-10">
+                        <input name="name" value="@Model" class="form-control" />
+                    </div>
+                </div>                
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success">Создать</button>
+                        @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+                    </div>
+                </div>
+            </div>
+        }
+
+    

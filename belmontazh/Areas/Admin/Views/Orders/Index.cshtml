@@ -1,0 +1,52 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<ContractModel>
+@{
+    ViewBag.Title = "Заказы";
+}
+<h2>@ViewBag.Title</h2>
+<hr />
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row table-responsive">
+        <table class="table">
+            <tr>
+                <td><b>Имя</b></td>
+                <td><b>Телефон</b></td>
+                <td><b>Адрес</b></td>
+                <td><b>Позиций</b></td>
+                <td><b>Сумма</b></td>
+                <td><b></b></td>
+            </tr>
+
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>
+                        @m.name
+                    </td>
+                    <td>
+                        @m.phone
+                    </td>
+                    <td>
+                        @m.adres
+                    </td>
+                    <td>
+                        @m.Orders.Count
+                    </td>
+                    <td>
+                        @m.Orders.Sum(x => x.cost * x.countDveri + x.cost * x.countKomplekt)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Просмотр", "detalis", new { id = m.id }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Выполнен", "done", new { id = m.id }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+
+            }
+        </table>
+    </div>
+}
+else
+{
+    @:Нет данных для отображения
+    }

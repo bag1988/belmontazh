@@ -1,0 +1,86 @@
+﻿@model belmontazh.Models.ProizvoditelModel
+@{
+    ViewBag.Title = "Производитель";
+}
+<hr />
+@Html.Partial("dveriMenu")
+<hr />
+<h2>Производитель</h2>
+<hr />
+@Html.ValidationSummary(false)
+@using (Html.BeginForm("CreateProizvoditel", "Dveri", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="row">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(m => m.name, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.country, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.country, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.description, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextAreaFor(m => m.description, new { @class = "form-control", @rows=5 })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <input type="submit" class="btn btn-success" value="Создать" />
+                @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+
+}
+@if (ViewBag.List != null && ViewBag.List.Count > 0)
+{
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.country)
+                </th>
+                <th>
+
+                </th>
+            </tr>
+
+            @foreach (var m in ViewBag.List)
+                {
+                <tr>
+                    <td>
+                        @m.id
+                    </td>
+                    <td>
+                        @m.name
+                    </td>
+                    <td>
+                        @m.country
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-success" onclick="editProizvoditel('@m.id', '@m.name', '@m.description','@m.country');" value="Изменить" />
+                        @Html.ActionLink("Удалить", "DeleteProizvoditel", new { id = m.id }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+}
+else
+{
+    @:Нет проектов для отображения
+        }

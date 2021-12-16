@@ -1,0 +1,49 @@
+﻿@using belmontazh.Models
+@model projectModel
+@{
+    ViewBag.Title = "Изменить Проект";
+}
+<h2>Изменить Проект</h2>
+<hr />
+@Html.ValidationSummary()
+@using (Html.BeginForm("Edit", "Project", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="row">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(m => m.name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.name, new { @value = Model.name, @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.description, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.description, new { @value = Model.description, @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.urlImage, new { @class = "col-md-2 control-label" })
+            @Html.HiddenFor(m=>m.urlImage, new {@value=Model.urlImage })
+            <div class="col-md-10">
+                <span class='label label-info col-md-8' style="white-space:pre-line;clear:both;" id="upload-file-info"></span>
+                <a class='btn' style="float:left;clear:both;" href='javascript:;'>
+                    Выберите файл...
+                    <input type="file" name="Image" size="40"
+                           style="position:absolute;z-index:2;top:0;
+                                left:0;filter: alpha(opacity=0); opacity:0;
+                                background-color:transparent;color:transparent;"
+                           onchange='$("#upload-file-info").html($(this).val());'>
+                </a>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value="Изменить" />
+                @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+
+    </div>
+}

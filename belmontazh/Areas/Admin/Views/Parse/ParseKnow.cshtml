@@ -1,0 +1,131 @@
+﻿@model List<string>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Parse</title>
+</head>
+<body>
+    <span onclick="startParse();">Старт</span>
+    <div>
+        @foreach (string str in Model)
+        {
+            <p>@str</p>
+        }
+    </div>
+</body>
+</html>
+<script>
+    function startParse() {
+
+        var p = $("div").find("p:first");
+        parse(p);
+
+    }
+    function parse(obj) {
+       
+        var url = $(obj).text();
+        $.ajax({
+            type: "POST",
+            url: "/admin/parse/getParse",
+            data: '{url: ' + JSON.stringify(url) + ' }',
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                parseHTML(response, obj)
+            },
+            failure: function (response) {
+                setTimeout(startParse, 1000);
+            },
+            error: function (response) {
+                setTimeout(startParse, 1000);
+            }
+        });
+    }
+    function parseHTML(html, obj)
+    {
+        
+        var divContent = $(html).find(".articleBody");
+        var nameKnow = $(html).find("h1").text();
+        //$(divContent).find(".rekl").detach();
+        $(divContent).find("script").parent().detach();
+        $(divContent).find("center").detach();
+        $(divContent).html().replace("&nbsp;", " ");
+        var VRegExp = new RegExp(/Для расчета количества ступеней.*<\/a>/);
+        $(divContent).html().replace(VRegExp, "");
+        $(divContent).find("*").removeAttr("id");
+        var arrayImg = $(divContent).find("img");
+        var replaceImg = new Array();
+        for(var i=0;i<arrayImg.length;i++)
+        {
+            
+            if ($(arrayImg[i]).parents("a").length > 0)
+                replaceImg.push({ "id": i, "url": $(arrayImg[i]).parents("a").attr("href") });
+            else
+                replaceImg.push({ "id": i, "url": $(arrayImg[i]).attr("src") });
+            
+            var parent = $(arrayImg[i]);
+            $(arrayImg[i]).removeAttr("*");
+            $(arrayImg[i]).replaceWith("<img id='" + i + "'/>");
+            //while (true)
+            //{
+                
+            //    var parentText = $(parent).parent().text();
+            //    if (parentText.length == 0) {
+            //        var newparent = $(parent).parent();
+            //        parent = newparent;
+            //    }
+            //    else
+            //    {
+            //        $(parent).replaceWith("<img id='" + i + "'/>");
+            //        break;
+                    
+            //    }
+            //}
+        }
+        
+        $(divContent).find("*").removeAttr("style");
+        $(divContent).find("*").removeAttr("class");
+        $(divContent).find("a").each(function () {
+            var tex = $(this).text();
+            if (tex == $(this).attr("href")) {
+                $(this).detach();
+            }
+            else {
+                $(this).replaceWith(tex);
+            }
+        });
+       
+        $(divContent).find("iframe").parent().detach();
+        $(divContent).text().replace("Видео по теме:", "");
+        var smallDescription = $(divContent).text().substr(0, 400);
+        var knowBase = new Array();
+        knowBase.push({ "name": nameKnow, "smallDescription": smallDescription.replace(/\n/g, ""), "Content": $(divContent).html().replace(/\n/g, "").replace("<p>&nbsp;</p>",""), "arrayImg": replaceImg });
+        
+        $.ajax({
+            type: "POST",
+            url: "/admin/parse/saveParseKnow",
+            data: JSON.stringify(knowBase),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (response) {
+                $(obj).replaceWith("<b style='color:green;'>" + $(obj).text() + "</b><br/>");
+                setTimeout(startParse, 1000);
+            },
+            failure: function (response) {
+                $(obj).replaceWith("<b style='color:red;'>" + $(obj).text() + "</b><br/><br/>");
+                setTimeout(startParse, 1000);
+            },
+            error: function (response) {
+                $(obj).replaceWith("<b style='color:red;'>" + $(obj).text() + "</b><br/><br/>");
+                setTimeout(startParse, 1000);
+            }
+        });
+    }
+</script>
+@Scripts.Render("~/bundles/jquery")

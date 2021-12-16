@@ -1,0 +1,81 @@
+﻿@using belmontazh.Models
+@model projectImg
+@{
+    ViewBag.Title = "Добавить фотографии в проект";
+}
+<h2>Добавить фотографии в проект @ViewBag.NameProject</h2>
+<hr />
+@Html.ValidationSummary()
+@using (Html.BeginForm("AddImg", "Project", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="row">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.idProject, new { @value = Model.idProject })
+        <div class="form-group">
+            @Html.LabelFor(m => m.description, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.description, new { @class = "form-control" })
+            </div>
+        </div>        
+        <div class="form-group">
+            @Html.LabelFor(m => m.urlImage, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <span class='label label-info col-md-8' style="white-space:pre-line;clear:both;" id="upload-file-info"></span>
+                <a class='btn' style="float:left;clear:both;" href='javascript:;'>
+                    Выберите файл...
+                    <input type="file" name="Image" size="40" multiple 
+                           style="position:absolute;z-index:2;top:0;
+                                left:0;filter: alpha(opacity=0); opacity:0;
+                                background-color:transparent;color:transparent;"
+                           onchange='$("#upload-file-info").html($(this).val());'>
+                </a>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value="Добавить" />
+                @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+
+    </div>
+}
+<div class="row">
+    @if (ViewBag.Images.Count > 0)
+    {
+        foreach (projectImg img in ViewBag.Images)
+        {
+            <div class="col-md-3 text-center" style="padding:10px; height:200px;position:relative;">
+                <img onclick="openFoto(this)" data-image="@img.urlImage" class="img-thumbnail vertical_align" style="max-width:150px; max-height:130px;cursor:pointer;" src="@img.smalUrlImage" />
+                <div style="bottom: 5px;position: absolute;width: 90%;">
+                    @Html.ActionLink("Удалить", "DeleteImg", new { id = img.id, idProject=img.idProject }, new { @class = "btn btn-danger btn-xs" })
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        @:Нет фотографий для отображения
+        }
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                
+            </div>
+        </div>
+        <div class="left carousel-control" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+        </div>
+        <div class="right carousel-control" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+        </div>
+
+    </div>
+</div>

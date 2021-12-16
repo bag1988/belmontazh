@@ -1,0 +1,48 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<knowBaseModel>
+@{
+    ViewBag.Title = "База знаний";
+}
+<h2>База знаний @Html.ActionLink("Создать", "Create", null, new { @class = "btn btn-success" })</h2>
+<hr />
+<div class="row">
+    <div class="col-md-7">
+        <form action="/admin/knowbase?name=" method="get" class="form-horizontal">
+            <div class="form-group">
+                <label for="name" class="control-label col-md-4">Наименование</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" id="name" name="name" />
+                </div>
+                <div class="col-md-3">
+                    <input type="submit" class="btn btn-success" value="Поиск" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-5 text-right">
+        <div class="btn-group">
+            @Html.PageLinks((PageInfo)ViewBag.PageInfo, Url.Action("index", new {name=Request.Params["name"] }))
+        </div>
+    </div>
+</div>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row">
+        @foreach (var m in Model)
+        {
+            <div class="col-md-12 text-justify" style="padding:10px;">
+                <h4>@Html.ActionLink(m.name, "Edit", new { id = m.id })</h4>
+                <p>
+                   <img class="img-thumbnail" style="max-width:150px; max-height:130px; float:left; margin:5px;" src="@m.urlImage" />
+                @m.description
+                </p>
+                    @Html.ActionLink("Изменить", "Edit", new { id = m.id }, new { @class = "btn btn-success btn-xs" })
+                    @Html.ActionLink("Удалить", "Delete", new { id = m.id }, new { @class = "btn btn-danger btn-xs" })
+            </div>
+        }
+    </div>
+}
+else
+{
+    @:Нет данных для отображения
+    }

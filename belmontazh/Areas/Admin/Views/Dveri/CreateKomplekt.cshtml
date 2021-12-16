@@ -1,0 +1,108 @@
+﻿@using belmontazh.Models;
+@model belmontazh.Models.dveriKomplektModel
+@{
+    ViewBag.Title = "Создать комплектующии двери";
+}
+<hr />
+@Html.Partial("dveriMenu")
+<hr />
+<h2>@ViewBag.Title</h2>
+<hr />
+@Html.ValidationSummary(false)
+@using (Html.BeginForm("CreateKomplekt", "Dveri", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="row">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(m => m.name, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.cost, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.cost, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.defaultValue, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.defaultValue, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.defaultSet, new { @class = "col-md-3 control-label" })
+            <div  class="col-md-9">
+                <label class="switch">
+                    <input type="checkbox" data-val="True" id="defaultSet" name="defaultSet" value="True" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <input type="submit" class="btn btn-success" value="Создать" />
+                @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+
+}
+@if (ViewBag.List != null && ViewBag.List.Count > 0)
+{
+    <div class="row">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.cost)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.defaultValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.defaultSet)
+                </th>
+                <th>
+
+                </th>
+            </tr>
+
+            @foreach (dveriKomplektModel m in ViewBag.List)
+                {
+                <tr>
+                    <td>
+                        @m.id
+                    </td>
+                    <td>
+                        @m.name
+                    </td>
+                    <td>
+                        @m.cost
+                    </td>
+                    <td>
+                        @m.defaultValue
+                    </td>
+                    <td>
+                        @m.defaultSet
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-success" onclick="editKomplekt('@m.id', '@m.name', '@m.cost', '@m.defaultValue', '@m.defaultSet');" value="Изменить" />
+                        @Html.ActionLink("Удалить", "DeleteKomplekt", new { id = m.id }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+}
+else
+{
+    @:Нет проектов для отображения
+        }

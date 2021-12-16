@@ -1,0 +1,68 @@
+﻿@using belmontazh.Models;
+@model oknaForm
+@{
+    ViewBag.Title = "Окна ПВХ";
+}
+
+<h2>Окна ПВХ @Html.ActionLink("Добавить стеклопакет", "CreateCteklo", null, new { @class = "btn btn-success" }) @Html.ActionLink("Добавить профиль", "CreateProf", null, new { @class = "btn btn-success" }) @Html.ActionLink("Добавить фурнитуру", "CreateHardware", null, new { @class = "btn btn-success" }) @Html.ActionLink("Добавить тип", "CreateType", null, new { @class = "btn btn-success" }) @Html.ActionLink("Монтаж", "CreateMontazh", null, new { @class = "btn btn-success" })</h2>
+<hr />
+@if (ViewBag.List != null)
+{
+    @Html.ValidationSummary(false)
+    using (Html.BeginForm("Index", "Okna", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+    <div class="row">
+        <div class="row">            
+            @foreach(oknaTypeModel typ in ViewBag.List.oknaTypeModel)
+            {
+                <label class="labelRadio">                    
+                    @Html.RadioButtonFor(model => Model.oknaTypeModel, typ.id )
+                    <img src="@typ.urlImage" alt="@typ.name" style="max-height:80px;" />
+                </label>
+            }
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.oknaCtekloModel, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("oknaCtekloModel", new SelectList(ViewBag.List.oknaCtekloModel, "id", "name"), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.oknaHardwareModel, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("oknaHardwareModel", new SelectList(ViewBag.List.oknaHardwareModel, "id", "name"), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.oknaProfModel, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("oknaProfModel", new SelectList(ViewBag.List.oknaProfModel, "id", "name"), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.width, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.width, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.height, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.height, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value="Расчет" />
+            </div>
+        </div>
+    </div>
+        }
+    <div class="row">
+        <h4>Стоимость: @ViewBag.Cost</h4>
+    </div>
+    }
+else
+{
+    @:Нет проектов для отображения
+}

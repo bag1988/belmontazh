@@ -1,0 +1,55 @@
+﻿@model belmontazh.Models.krovliaModel
+
+@{
+    ViewBag.Title = Model.name+" редактирование";
+}
+
+
+<h2>@Model.name редактирование</h2>
+<hr />
+@Html.ValidationSummary(false)
+@using (Html.BeginForm("Edit", "Krovlia", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+
+    <div class="row">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(model => model.krovliaKategoriesModelid, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("krovliaKategoriesModelid", new SelectList(ViewBag.Kategories, "id", "name", Model.krovliaKategoriesModelid), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>  
+        <div class="form-group">
+            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @value = Model.name, @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.unitsModelid, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("unitsModelid", new SelectList(ViewBag.Units, "id", "name", Model.unitsModelid), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <h3>Расценка</h3>
+
+        <div id="propertyValue">
+            @for (int i = 0; i < ViewBag.Property.Count; i++)
+            {
+                <div class="form-group">
+                    <input type="hidden" id="krovliaTypeValueModel[@i].krovliaTypeModelid" name="krovliaTypeValueModel[@i].krovliaTypeModelid" value=@ViewBag.Property[i].id />
+                    <label class="control-label col-md-2">@ViewBag.Property[i].name</label>
+                    <div class="col-md-10">
+                        @Html.TextBox("krovliaTypeValueModel[" + i + "].cost", Model.krovliaTypeValueModel.ElementAt(i).cost, htmlAttributes: new { @class = "form-control", @id = "krovliaTypeValueModel[" + i + "].cost" })
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value="Создать" />
+                @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,19 @@
+﻿@using belmontazh.Models;
+@model viewOrdersTotal
+
+@if(Model.count!=0)
+{
+    <div class="cartUser">
+        <a href="~/cart/index/">
+            <div class="row">
+                <h4 class="text-center"><span class="glyphicon glyphicon-shopping-cart"></span> Ваша корзина</h4>
+                <div class="col-md-5">
+                    <p>Позиций: <b>@Model.count</b></p>
+                </div>
+                <div class="col-md-7">
+                   Сумма @Math.Round(Model.cost,2) руб
+                </div>
+            </div>
+        </a>
+    </div>
+}

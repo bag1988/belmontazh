@@ -1,0 +1,157 @@
+﻿@model belmontazh.Models.DveriKomnatModel
+@using belmontazh.Models
+@{
+    ViewBag.Title = Model.name + " редактирование";
+}
+
+<hr />
+@Html.Partial("dveriMenu")
+<hr />
+<h2>@Model.name  редактирование</h2>
+<hr />
+@Html.ValidationSummary(false)
+@using (Html.BeginForm("Edit", "Dveri", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+
+    <div class="row">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(model => model.kategoriModelid, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("kategoriModelid", new SelectList(ViewBag.Kategori, "value", "text", Model.kategoriModelid), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @if (Model.imageDveri != null)
+            {
+                <div class="row">
+                    @for (int i = 0; i < Model.imageDveri.Count; i++)
+                    {
+                    <div class="col-md-3 text-center">
+                        <img src="@Model.imageDveri.ElementAt(i).urlImage" style="width:80%;" />
+                        @Html.Hidden("imageDveri[" + i + "].urlImage", Model.imageDveri.ElementAt(i).urlImage, new { @id = "imageDveri[" + i + "].urlImage" })
+                        <input type="button" class="btn btn-danger btn-xs" value="Удалить" onclick="removeImageDveri(this)" />
+                    </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="form-group">
+                   @Html.LabelFor(m => m.imageDveri, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                <input type="file" name="Image" size="40" multiple>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @value = Model.name, @class = "form-control" } })
+            </div>
+        </div>        
+        <div class="form-group">
+            @Html.LabelFor(model => model.enable, htmlAttributes: new { @class = "control-label  col-md-3" })
+            <div class="col-md-9">
+                <label class="switch">
+                    <input type="checkbox" checked="@Model.enable" data-val="True" id="enable" name="enable" value="True" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.presence, htmlAttributes: new { @class = "control-label  col-md-3" })
+            <div class="col-md-9">
+                <label class="switch">
+                    <input type="checkbox" checked="@Model.presence" data-val="True" id="presence" name="presence" value="True" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.materialDveriModelid, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("materialDveriModelid", new SelectList(ViewBag.Material, "value", "text", Model.materialDveriModelid), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.description, new { htmlAttributes = new { @value = Model.description, @class = "form-control", @rows = "10" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cost, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.cost, new { htmlAttributes = new { @value = Model.cost, @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProizvoditelModelid, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("ProizvoditelModelid", new SelectList(ViewBag.Proizvoditel, "value", "text", Model.ProizvoditelModelid), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <h3>Комплектация</h3>
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Выбор</th>
+                            <th>Наименование</th>
+                            <th>Цена за ед.</th>
+                            <th>Кол-во</th>
+                        </tr>
+                    </thead>
+                    @for (int i = 0; i < ViewBag.Komplekt.Count; i++)
+                    {
+                        <tr>
+                            <td>
+
+                                @if (Model.MouldingsDveri != null)
+                                {
+                                    if (Model.MouldingsDveri.Where(x => x.dveriKomplektModelId == ViewBag.Komplekt[i].id).ToList().Count > 0)
+                                    {
+                                        <input id="MouldingsDveri[@i].dveriKomplektModelId" name="ViewBag.Komplekt[@i].dveriKomplektModelId" value="" type="checkbox" checked="checked" data-val="@ViewBag.Komplekt[i].id" onchange="addkomplektCheckBox(this)" />
+                                        <input name="MouldingsDveri[@i].dveriKomplektModelId" type="hidden" value="@ViewBag.Komplekt[i].id" />
+                                    }
+                                    else
+                                    {
+                                        <input id="MouldingsDveri[@i].dveriKomplektModelId" name="ViewBag.Komplekt[@i].dveriKomplektModelId" value="" type="checkbox" data-val="@ViewBag.Komplekt[i].id" onchange="addkomplektCheckBox(this)" />
+                                        <input name="MouldingsDveri[@i].dveriKomplektModelId" type="hidden" />
+                                    }
+                                }
+                                else
+                                {
+                                    <input id="MouldingsDveri[@i].dveriKomplektModelId" name="ViewBag.Komplekt[@i].dveriKomplektModelId" value="" type="checkbox" data-val="@ViewBag.Komplekt[i].id" onchange="addkomplektCheckBox(this)" />
+                                    <input name="MouldingsDveri[@i].dveriKomplektModelId" type="hidden" />
+                                }
+
+
+                            </td>
+                            <td>
+                                @ViewBag.Komplekt[i].name
+                            </td>
+                            <td>
+                                @ViewBag.Komplekt[i].cost
+                            </td>
+                            <td>
+                                @ViewBag.Komplekt[i].defaultValue
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+
+        @Html.Action("valuePropertyResult", new { modelProperty = Model.valueProperty.ToList() })
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <input type="submit" class="btn btn-success" value="Изменить" />
+                @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}

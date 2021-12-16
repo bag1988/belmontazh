@@ -1,0 +1,146 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<DveriKomnatModel>
+@{
+    ViewBag.Title = "Двери";
+}
+<hr/>
+@Html.Partial("dveriMenu")
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#FilterNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="FilterNavbar">            
+            <form class="navbar-form navbar-left" action="/admin/dveri?name=" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Наименование" name="name" id="name" value="@Request.Params["name"]">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>          
+
+            <form action="@Request.Path?@Html.deleteGetParam("page")" method="post" class="navbar-form navbar-left">
+                <div class="form-group">   
+                        @Html.DropDownList("typeDveri", new SelectList(new[] {
+                       new SelectListItem{ Text="Все двери", Value="0"},
+                                       new SelectListItem{ Text="Межкомнатные", Value = "1" },
+                                       new SelectListItem{ Text="Входные", Value = "2" }                                       
+                                       }, "Value", "Text", ViewBag.typeDveri
+                                   ), htmlAttributes: new { @onchange = "this.form.submit()", @class = "form-control" })
+                    
+                </div>
+            </form>
+            @if (ViewBag.ProizList != null)
+            {
+                <form action="@Request.Path?@Html.deleteGetParam("page")" method="post" class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <select name="typeProiz" class="form-control" onchange="this.form.submit()">
+                            <option value="all">Все производители</option>
+                            @foreach (ProizvoditelModel p in ViewBag.ProizList)
+                            {
+                                if (p != null)
+                                {
+                                    if (ViewBag.typeProiz == p.nameEn)
+                                    {
+                                    <option selected="selected" value="@p.nameEn">@p.name</option>
+                                    }
+                                    else
+                                    {
+                                    <option value="@p.nameEn">@p.name</option>
+                                    }
+                                }
+                            }
+                        </select>
+
+                    </div>
+                </form>
+            }
+            @if (ViewBag.MaterialList != null)
+            {
+                <form action="@Request.Path?@Html.deleteGetParam("page")" method="post" class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <select name="typeMaterial" class="form-control" onchange="this.form.submit()">
+                            <option value="all">Любой материал</option>
+                            @foreach (materialDveriModel p in ViewBag.MaterialList)
+                            {
+                                if (p != null)
+                                {
+                                    if (ViewBag.typeMaterial == p.nameEn)
+                                    {
+                                    <option selected="selected" value="@p.nameEn">@p.name</option>
+                                    }
+                                    else
+                                    {
+                                    <option value="@p.nameEn">@p.name</option>
+                                    }
+                                }
+                            }
+                        </select>
+
+                    </div>
+                </form>
+            }
+            <form action="@Request.Path?@Html.deleteGetParam("page")" method="post" class="navbar-form navbar-left">
+                <div class="form-group">
+                    @Html.DropDownList("sort", new SelectList(new[] {
+                                       new SelectListItem{ Text="популярности", Value = "popular" },
+                                       new SelectListItem{ Text="цене начать с дешевых", Value = "cost" },
+                                       new SelectListItem{ Text="названию А-Я", Value = "name" }
+                                       }, "Value", "Text", ViewBag.Sort
+                                   ), htmlAttributes: new { @onchange = "this.form.submit()", @class = "form-control" })
+                </div>
+            </form>
+
+        </div>
+    </div>
+</nav>
+
+
+<hr />
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="col-md-12 text-right">
+        <div class="btn-group">
+            @Html.PageLinks((PageInfo)ViewBag.PageInfo, Url.Action("index"))
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var m in Model)
+            {
+            <div style="display:inline-block; margin:10px; border: 1px solid #808080;">
+                <div class="dveri_content">
+                    <div>
+                        <a href="@Url.Action("Edit", new { id = m.id })" target="_blank">@m.name<b>@Html.DisplayFor(model => @m.cost) BYN</b></a>
+                        @if (m.imageDveri.Count > 0)
+            {
+                            <img src="@m.imageDveri.ElementAt(0).urlImage" />
+                        }
+                    </div>                    
+                </div>
+                <div style="width:100%; padding-bottom:15px; margin-top:-15px; text-align:center;">
+                    @Html.ActionLink("Изменить", "Edit", new { id = m.id }, new { @class = "btn btn-success btn-xs" })
+                    @Html.ActionLink("Удалить", "Delete", new { id = m.id }, new { @class = "btn btn-danger btn-xs" })
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-12 text-right">
+        <div class="btn-group">
+            @Html.PageLinks((PageInfo)ViewBag.PageInfo, Url.Action("index"))
+        </div>
+    </div>
+}
+else
+{
+    @:Нет проектов для отображения
+    }

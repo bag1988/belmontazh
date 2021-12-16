@@ -1,0 +1,68 @@
+﻿@model List<belmontazh.Models.commentModel>
+    @if (Model != null && Model.Count() > 0)
+    {
+    <div class="comment">        
+        <div id="myCarouselComment" class="carousel fade" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators" style="display:none;">
+                @foreach (var com in Model)
+                {
+                    if (Model.Min(x => x.id) == com.id)
+                    {
+                        <li data-target="#myCarouselComment" data-slide-to="@com.id" class="active"></li>                        
+                    }
+                    else
+                    {
+                        <li data-target="#myCarouselComment" data-slide-to="@com.id"></li>
+                    }
+                }
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="container">
+                <div class="carousel-inner">
+                    @foreach (var com in Model)
+                    {
+                        if (Model.Min(x => x.id) == com.id)
+                        {
+                            <div class="item active">
+                                <div class="carousel-caption commentCarousel">
+                                    <p>
+                                        <img src="~/images/5-star-rating.png" />
+                                    </p>
+                                    <p>@com.description</p>
+                                    <strong>@com.nameComment</strong>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <div class="carousel-caption commentCarousel">
+                                    <p>
+                                        <img src="~/images/5-star-rating.png" />
+                                    </p>
+                                    <p>@com.description</p>
+                                    <strong>@com.nameComment</strong>
+                                </div>
+                            </div>
+                        }
+                    }
+
+
+                </div>
+            </div>
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarouselComment" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarouselComment" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    }
+
+

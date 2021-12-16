@@ -1,0 +1,15 @@
+﻿@using belmontazh.Models;
+@model knowBaseModel
+@{
+    ViewBag.Title = Model.name;
+    ViewBag.Description = Model.content.Substring(0, 100);
+}
+
+<div class="container">
+    <h2 style="text-align:center;">@ViewBag.Title</h2>
+    <hr class="hr_orange" />
+    <div class="row knowBase">
+        @Html.Raw(Model.content)
+    </div>
+
+</div>

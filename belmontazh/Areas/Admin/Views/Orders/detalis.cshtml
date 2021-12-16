@@ -1,0 +1,98 @@
+﻿@using belmontazh.Models;
+@model ContractModel
+@{
+    ViewBag.Title = "Заказы";
+}
+<h2>@ViewBag.Title</h2>
+<hr />
+@if (Model != null)
+{
+    using (Html.BeginForm("detalis", "orders", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+    {
+        @Html.ValidationSummary(false)
+        <div class="row">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @value = Model.name, @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.phone, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @value = Model.phone, @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.adres, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.adres, new { htmlAttributes = new { @value = Model.adres, @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.description, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.description, new { htmlAttributes = new { @value = Model.description, @class = "form-control", @rows = "10" } })
+                </div>
+            </div>
+
+            <h3>Заказ</h3>
+
+            @if (Model.Orders != null)
+            {
+                for (int i = 0; i < Model.Orders.Count; i++)
+                {
+                    <div class="form-group">
+                        <input type="hidden" id="Orders[@i].id" name="Orders[@i].id" value="@Model.Orders.ElementAt(i).id" />
+                        <input type="hidden" id="Orders[@i].dveriId" name="Orders[@i].dveriId" value="@Model.Orders.ElementAt(i).dveriId" />
+                        <input type="hidden" id="Orders[@i].komplektId" name="Orders[@i].komplektId" value="@Model.Orders.ElementAt(i).komplektId" />
+                        <input type="hidden" id="Orders[@i].cost" name="Orders[@i].cost" value="@Model.Orders.ElementAt(i).cost" />
+                        <input type="hidden" id="Orders[@i].ContractModelid" name="Orders[@i].ContractModelid" value="@Model.Orders.ElementAt(i).ContractModelid" />
+                        <input type="hidden" id="Orders[@i].name" name="Orders[@i].name" value="@Model.Orders.ElementAt(i).name" />
+                        
+
+                        @if (Model.Orders.ElementAt(i).countDveri != 0)
+                        {
+                            @Html.ActionLink(Model.Orders.ElementAt(i).name, "edit","dveri", new { id = Model.Orders.ElementAt(i).dveriId }, new { @class = "control-label col-md-3" })
+                            
+                            <div class="col-md-7">
+                                @Html.TextBox("Orders[" + i + "].countDveri", Model.Orders.ElementAt(i).countDveri.ToString(),new { @id = "Orders[" + i + "].countDveri", @class = "form-control" } )
+                            </div>
+                            <div class="col-md-2">
+                               <strong>@(Model.Orders.ElementAt(i).countDveri* Model.Orders.ElementAt(i).cost) BYN</strong>
+                            </div>
+                        }
+                        @if (Model.Orders.ElementAt(i).countKomplekt != 0)
+                        {
+                            <label class="control-label col-md-3">@Model.Orders.ElementAt(i).name</label>
+                            <div class="col-md-7">
+                                @Html.TextBox("Orders[" + i + "].countKomplekt", Model.Orders.ElementAt(i).countKomplekt.ToString(),  new { @id = "Orders[" + i + "].countKomplekt", @class = "form-control" } )
+                            </div>
+                            <div class="col-md-2">
+                                <strong>@(Model.Orders.ElementAt(i).countKomplekt * Model.Orders.ElementAt(i).cost) BYN</strong>
+                            </div>
+                        }
+                    </div>
+                }
+                <div class="form-group">
+                    <div class="col-md-offset-9 col-md-3">
+                        <label class="control-label col-md-12">Итого: @Model.Orders.Sum(x => x.cost * x.countDveri + x.cost * x.countKomplekt) BYN</label>
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <input type="submit" class="btn btn-success" value="Изменить" />
+                    @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Выполнен", "done", new { id = Model.id }, new { @class = "btn btn-danger" })
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    @:Нет данных для отображения
+    }

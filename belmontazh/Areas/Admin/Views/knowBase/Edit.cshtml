@@ -1,0 +1,137 @@
+﻿@model belmontazh.Models.knowBaseModel
+@{
+    ViewBag.Title = "Редактирование статьи";
+}
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet" />
+<h2>Редактирование статьи</h2>
+<hr />
+@Html.ValidationSummary(false)
+@using (Html.BeginForm("Edit", "knowBase", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+
+    <div class="row">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(m => m.name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.name, new { @value = Model.name, @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.urlImage, new { @class = "col-md-2 control-label" })
+            @Html.HiddenFor(m => m.urlImage, new { @value = Model.urlImage })
+            <div class="col-md-10">
+                <span class='label label-info col-md-8' style="white-space:pre-line;clear:both;" id="upload-file-info"></span>
+                <a class='btn' style="float:left;clear:both;" href='javascript:;'>
+                    Выберите файл...
+                    <input type="file" name="Image" size="40"
+                           style="position:absolute;z-index:2;top:0;
+                                left:0;filter: alpha(opacity=0); opacity:0;
+                                background-color:transparent;color:transparent;"
+                           onchange='$("#upload-file-info").html($(this).val());'>
+                </a>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.description, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.description, new { @value = Model.description, @class = "form-control", @rows = "5" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2" style="text-align:right;">
+                @Html.LabelFor(m => m.content, new { @class = "control-label" })
+                <span style="display:block; cursor:pointer; color:blue;" onclick="enableEditor()" data-target="#editorPanel">Загрузить редактор</span>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.content, new { @value = Model.content, @class = "form-control", @rows = 10 })
+
+                <div id="editorPanel" style="display:none;">
+                    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+
+                    </div>
+                    <div id="editor" class="lead" data-placeholder=""></div>
+                    <div id="editorPreview"></div>
+                    <p style="text-align: center;">
+                        <a class="btn btn-large btn-default jumbo" href="#!" onClick="$('#editorPreview').html($('#editor').html());">Просмотр</a>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-success" value="Создать" />
+                @Html.ActionLink("Отмена", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+
+    </div>
+
+
+}
+<div id="addImage" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row" style="padding-bottom:15px;" id="imageResult">
+                    @Html.Action("imageResult")
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <input type="button" onclick="saveImage();" class="btn btn-success" value="Добавить" />
+                        </div>
+                        <div class="col-md-10">
+                            <input type="file" id="newImage" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="urlImg" class="col-md-3 control-label">Url</label>
+                        <div class="col-md-9">
+                            <input type="text" id="urlImg" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="widthImg" class="col-md-3 control-label">Ширина</label>
+                        <div class="col-md-9">
+                            <input type="text" id="widthImg" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="heightImg" class="col-md-3 control-label">Высота</label>
+                        <div class="col-md-9">
+                            <input type="text" id="heightImg" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="alignImg" class="col-md-3 control-label">Выравнивание</label>
+                        <div class="col-md-9">
+                            <select id="alignImg" class="form-control">
+                                <option value=""></option>
+                                <option value="left">По левому краю</option>
+                                <option value="right">По правому краю</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <input type="button" data-edit="addImage" class="btn btn-success" value="Вставить" />
+                            <input type="button" data-edit="closeModal" class="btn btn-default" value="Закрыть" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

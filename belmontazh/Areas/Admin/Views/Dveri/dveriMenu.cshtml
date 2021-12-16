@@ -1,0 +1,23 @@
+﻿<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#AdminNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Двери", "index", null, new { @class = "navbar-brand" })
+        </div>
+        <div class="collapse navbar-collapse" id="AdminNavbar">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Создать", "Create")</li>
+                <li>@Html.ActionLink("Категория", "CreateKategori") </li>
+                <li>@Html.ActionLink("Редактор свойств", "CreateProperty") </li>
+                <li>@Html.ActionLink("Производитель", "CreateProizvoditel")</li>
+                <li>@Html.ActionLink("Комплектация", "CreateKomplekt")</li>
+                <li>@Html.ActionLink("Надбавка", "Increment")</li>
+                <li>@Html.ActionLink("Материал", "creatematerial")</li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,50 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<PriceModel>
+@{
+    ViewBag.Title = "Прайс";
+}
+<h2>Прайс @Html.ActionLink("Создать", "Create", null, new { @class = "btn btn-success" }) @Html.ActionLink("Добавить категорию", "CreateKategori", null, new { @class = "btn btn-success" }) @Html.ActionLink("Добавить ед.изм.", "CreateUnits", null, new { @class = "btn btn-success" })</h2>
+<hr />
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.kategoriPriceModel.name)</th>
+                    <th>@Html.DisplayNameFor(model=>model.name)</th>
+                    <th>@Html.DisplayNameFor(model => model.unitsModel.name)</th>
+                    <th>@Html.DisplayNameFor(model => model.cost)</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => m.kategoriPriceModel.name, new { @class = "col-md-3" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => m.name, new { @class = "col-md-3" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => m.unitsModel.name, new { @class = "col-md-3" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => m.cost, new { @class = "col-md-3" })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Изменить", "Edit", new { id = m.id }, new { })
+                            @Html.ActionLink("Удалить", "Delete", new { id = m.id }, new { })
+                            </td>
+</tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    @:Нет проектов для отображения
+}

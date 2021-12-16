@@ -1,0 +1,104 @@
+﻿@using belmontazh.Models;
+@model ContractModel
+@{
+    ViewBag.Title = "Оформление заказа";
+}
+
+<div class="container">
+    <h2 style="text-align:center;">@ViewBag.Title</h2>
+
+    <hr class="hr_orange" />
+    <div class="row">
+        <div class="col-md-3">
+            @Html.Action("leftmenu", "dveri")
+        </div>
+        <div class="col-md-9">
+            @if (ViewBag.Succses == null)
+            {
+            <div class="row table-responsive">
+                <table class="table">
+                    <tr>
+                        <td><b>Наименование</b></td>
+                        <td><b>Кол-во</b></td>
+                        <td><b>Цена</b></td>
+                    </tr>
+                    @foreach (OrdersModel order in ViewBag.Order)
+                    {
+                        <tr>
+                            <td>@order.name</td>
+                            @if (order.dveriId != 0)
+                            {
+                                <td>
+                                    @order.countDveri
+                                </td>
+                                <td><strong>@(order.cost * order.countDveri)</strong> руб</td>
+                            }
+                            @if (order.komplektId != 0)
+                            {
+                                <td>
+                                    @order.countKomplekt
+                                </td>
+                                <td><strong>@(order.cost * order.countKomplekt)</strong> руб</td>
+                            }
+                           
+                        </tr>
+                    }
+                    <tr class="text-right">
+                        <td colspan="5">
+                            <p>
+                              Итого: <b>@(ViewBag.Cost) руб</b>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="row">
+                @Html.ValidationSummary(false)
+                @using (Html.BeginForm("createOrder", "cart", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="row">
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" style="text-align:left;" for="name">Ваше Имя</label>
+                            <div class="col-md-9">
+                                @Html.EditorFor(m => m.name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" style="text-align:left;" for="phone">Номер телефона</label>
+                            <div class="col-md-9">
+                                @Html.EditorFor(m => m.phone, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" style="text-align:left;" for="adres">Адрес</label>
+                            <div class="col-md-9">
+                                @Html.EditorFor(m => m.adres, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>      
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" style="text-align:left;" for="description">Дополнительная информация</label>
+                            <div class="col-md-9">
+                                @Html.EditorFor(m => m.description, new { htmlAttributes = new { @class = "form-control", @rows="5" } })
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="row text-right">
+                        <input type="submit" class="btn btn-greeen" value="Оформить" />
+                    </div>
+
+                }
+            </div>
+            }
+            else
+            {
+            <h1 style="color:green;">@ViewBag.Succses</h1>
+            <p class="text-info">В ближайшее время с Вами свяжется наш сотрудник</p>
+            }
+
+
+        </div>
+
+    </div>
+
+</div>

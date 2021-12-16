@@ -1,0 +1,57 @@
+﻿@using belmontazh.Models;
+@model IEnumerable<DveriKomnatModel>
+@{
+    ViewBag.Title = "Купить межкомнатные двери недорого. Каталог фото и цены на межкомнатные двери.";
+    ViewBag.Description = "Заказать и купить недорогие межкомнатные двери в Борисове, Жодино, Крупки, Смолевичи, выгодно и просто. Доставка, установка. Замер - БЕСПЛАТНО! Каталог цен с фото и отзывами, огромный выбор моделей. Изготавливаем двери нестандартных размеров.";
+    ViewBag.Keywords = "двери межкомнатные, заказать межкомнатные двери, купить межкомнатные двери, купить межкомнатные двери цена, межкомнатные двери в Борисове, Жодино, Крупки, Смолевичи цены, межкомнатные двери цена";
+}
+
+<div class="container">
+    @Html.Action("sales", "oknapvh")
+    <h1 style="text-align:center;">Межкомнатные двери</h1>
+
+    <hr class="hr_orange" />
+    
+    <div class="row">
+        <div class="col-md-3">
+            @Html.Action("leftmenu")
+        </div>
+            <div class="col-md-9">
+                @Html.Action("Sort")
+            @if (Model != null && Model.Count() > 0)
+            {
+                <div class="row text-center">
+                    @foreach (var m in Model)
+                    {
+                        <div class="dveri_content">
+                            <div>
+                                <a href="@Url.Action("Detalis/"+ m.nameEn)">@m.name<b>@Html.DisplayFor(model => @m.cost) руб</b></a>
+                                @if (m.imageDveri.Count > 0)
+                                {
+                                    <img src="@m.imageDveri.ElementAt(0).urlImage" />
+                                }
+                            </div>                         
+                        </div>
+                    }
+                </div>
+                <div class="col-md-12 text-right">
+                    <div class="btn-group">
+                        @Html.PageLinks((PageInfo)ViewBag.PageInfo, Url.Action("mejkomnatnie"))
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="panel-group">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Внимание</div>
+                        <div class="panel-body">Поиск не дал результатов.</div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+   
+</div>
+
